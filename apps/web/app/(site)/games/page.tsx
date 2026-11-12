@@ -1,17 +1,12 @@
 "use client";
 
 import { Suspense, useEffect, useState, type FormEvent } from "react";
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { styled } from "@mui/material/styles";
 import { apiFetch } from "@/lib/api/client";
+import GameCard, { type GameCardGame } from "../../components/GameCard";
 
-type Game = {
-  id: string;
-  name: string;
-  lowestPrice: string | null;
-  region: string;
-  platform: string;
+type Game = GameCardGame & {
   sellers: { seller: { id: string; username: string } }[];
 };
 
@@ -92,45 +87,10 @@ const GameGrid = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("sm")]: { gridTemplateColumns: "repeat(2, minmax(0, 1fr))" },
   [theme.breakpoints.up("md")]: { gridTemplateColumns: "repeat(3, minmax(0, 1fr))" },
   [theme.breakpoints.up("lg")]: { gridTemplateColumns: "repeat(5, minmax(0, 1fr))" },
+  gap: "1rem",
+  overflowX: "auto",
+  paddingBottom: "0.5rem",
 }));
-const GameCard = styled(Link)({
-  backgroundColor: "var(--background-dark)",
-  boxShadow: "0 8px 20px rgba(70, 24, 172, 0.08)",
-  display: "flex",
-  flexDirection: "column",
-  width: "200px",
-  minHeight: "17rem",
-  border: '1px solid #63e3c2',
-  fontWeight: 600,
-  color: 'var(--text-subtle)',
-  fontSize: '0.7rem',
-  margin: '1rem 0',
-  textDecoration: "none",
-});
-const GameArtwork = styled("div")({
-  alignItems: "flex-end",
-  background: "linear-gradient(135deg, #4618ac, #e10d66)",
-  color: "#fff",
-  display: "flex",
-  fontSize: "1.25rem",
-  fontWeight: 700,
-  height: "16rem",
-  marginBottom: "1rem",
-  padding: "1rem",
-});
-const GameName = styled("h2")({
-  fontSize: "0.8rem", 
-  lineHeight: 1.3,
-  margin: 0,
-  color: "var(--foreground)"
-});
-const Details = styled("p")({ fontSize: "0.75rem", margin: "0.5rem 0", textTransform: "uppercase", color: "var(--foreground)" });
-const CardFooter = styled("div")({
-  alignItems: "center",
-  marginTop: "auto",
-  padding: "0 1rem 1rem 1rem",
-});
-const Price = styled("strong")({ color: "var(--foreground)", fontSize: "1.25rem" });
 const Pagination = styled("nav")({
   alignItems: "center",
   display: "flex",
@@ -268,19 +228,7 @@ function HomeContent() {
           <>
             <GameGrid>
               {games.items.map((game) => (
-                <GameCard href={`/games/${game.id}`} key={game.id}>
-                  <GameArtwork>{game.platform}</GameArtwork>
-                  <CardFooter>
-                    <GameName>{game.name}</GameName>
-                    <Details>
-                      {game.region}
-                    </Details>
-                    {game.lowestPrice ? `From` : "No offers"}
-                    <br/>
-                    {game.lowestPrice && <Price>€{game.lowestPrice}</Price>}
-                    
-                  </CardFooter>
-                </GameCard>
+                <GameCard game={game} key={game.id} />
               ))}
             </GameGrid>
             {games.totalPages > 1 && (
