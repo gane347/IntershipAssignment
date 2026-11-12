@@ -53,7 +53,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="border-t border-slate-800 px-5 py-5 text-center text-xs text-slate-500">
-        © {new Date().getFullYear()} Eneba. All rights reserved.
+        No rights reserved. This is a clone of Eneba for the application purpose only. All the content belongs to their respective owners.
       </div>
     </footer>
   );
