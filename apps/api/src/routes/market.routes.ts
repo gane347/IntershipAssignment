@@ -14,6 +14,26 @@ const quantitySchema = z.object({ quantity: z.number().int().min(1).max(99).defa
 
 export const marketRouter = Router();
 
+function serializeGame(game: {
+  id: string;
+  name: string;
+  region: string;
+  platform: string;
+  createdAt: Date;
+  sellers: { price: { toString(): string }; seller: { id: string; username: string } }[];
+}) {
+  const sellers = game.sellers.map((seller) => ({ ...seller, price: seller.price.toString() }));
+  const lowestPrice = sellers.reduce(
+    (lowest, seller) => Math.min(lowest, Number(seller.price)),
+    Number.POSITIVE_INFINITY,
+  );
+  return {
+    ...game,
+    sellers,
+    lowestPrice: Number.isFinite(lowestPrice) ? lowestPrice.toFixed(2) : null,
+  };
+}
+
 marketRouter.get("/games", async (_req, res) => {
   const query = z.object({
     page: z.coerce.number().int().min(1).default(1),
@@ -22,23 +42,31 @@ marketRouter.get("/games", async (_req, res) => {
   const result = await marketService.listGames(query.page, query.pageSize);
   res.json({
     ...result,
-    items: result.items.map((game) => ({ ...game, price: game.price.toString() })),
+    items: result.items.map(serializeGame),
   });
+});
+
+marketRouter.get("/games/:gameId", async (req, res) => {
+  const game = await marketService.getGame(gameIdSchema.parse(req.params.gameId));
+  res.json(serializeGame(game));
 });
 
 marketRouter.post("/games", requireAuth, requireSeller, async (req, res) => {
   const game = await marketService.createGame(req.user!.id, gameSchema.parse(req.body));
-  res.status(201).json(game);
+  res.status(201).json({
+    ...game,
+    sellers: game.sellers,
+  });
 });
 
 marketRouter.get("/wishlist", requireAuth, async (req, res) => {
   const wishlist = await marketService.getWishlist(req.user!.id);
-  res.json(wishlist.map((item) => ({ ...item, game: { ...item.game, price: item.game.price.toString() } })));
+  res.json(wishlist.map((item) => ({ ...item, game: serializeGame(item.game) })));
 });
 
 marketRouter.post("/wishlist/:gameId", requireAuth, async (req, res) => {
   const item = await marketService.addToWishlist(req.user!.id, gameIdSchema.parse(req.params.gameId));
-  res.status(201).json({ ...item, game: { ...item.game, price: item.game.price.toString() } });
+  res.status(201).json({ ...item, game: serializeGame(item.game) });
 });
 
 marketRouter.delete("/wishlist/:gameId", requireAuth, async (req, res) => {
@@ -48,7 +76,7 @@ marketRouter.delete("/wishlist/:gameId", requireAuth, async (req, res) => {
 
 marketRouter.get("/cart", requireAuth, async (req, res) => {
   const cart = await marketService.getCart(req.user!.id);
-  res.json(cart.map((item) => ({ ...item, game: { ...item.game, price: item.game.price.toString() } })));
+  res.json(cart.map((item) => ({ ...item, game: serializeGame(item.game) })));
 });
 
 marketRouter.post("/cart/:gameId", requireAuth, async (req, res) => {
@@ -57,7 +85,7 @@ marketRouter.post("/cart/:gameId", requireAuth, async (req, res) => {
     gameIdSchema.parse(req.params.gameId),
     quantitySchema.parse(req.body).quantity,
   );
-  res.status(201).json({ ...item, game: { ...item.game, price: item.game.price.toString() } });
+  res.status(201).json({ ...item, game: serializeGame(item.game) });
 });
 
 marketRouter.delete("/cart/:gameId", requireAuth, async (req, res) => {

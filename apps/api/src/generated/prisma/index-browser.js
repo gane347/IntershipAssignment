@@ -139,7 +139,6 @@ exports.Prisma.UserScalarFieldEnum = {
 exports.Prisma.GameScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  price: 'price',
   region: 'region',
   platform: 'platform',
   createdAt: 'createdAt'
@@ -147,7 +146,8 @@ exports.Prisma.GameScalarFieldEnum = {
 
 exports.Prisma.GameSellerScalarFieldEnum = {
   gameId: 'gameId',
-  sellerId: 'sellerId'
+  sellerId: 'sellerId',
+  price: 'price'
 };
 
 exports.Prisma.WishlistItemScalarFieldEnum = {

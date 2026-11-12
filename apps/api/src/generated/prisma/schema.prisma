@@ -33,7 +33,6 @@ model User {
 model Game {
   id        String         @id @default(uuid()) @db.Uuid
   name      String         @db.VarChar(150)
-  price     Decimal        @db.Decimal(10, 2)
   region    String         @db.VarChar(50)
   platform  String         @db.VarChar(50)
   createdAt DateTime       @default(now()) @map("created_at")
@@ -45,10 +44,11 @@ model Game {
 }
 
 model GameSeller {
-  gameId   String @map("game_id") @db.Uuid
-  sellerId String @map("seller_id") @db.Uuid
-  game     Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
-  seller   User   @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  gameId   String  @map("game_id") @db.Uuid
+  sellerId String  @map("seller_id") @db.Uuid
+  price    Decimal @db.Decimal(10, 2)
+  game     Game    @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  seller   User    @relation(fields: [sellerId], references: [id], onDelete: Cascade)
 
   @@id([gameId, sellerId])
   @@map("game_sellers")

@@ -3583,24 +3583,13 @@ export namespace Prisma {
 
   export type AggregateGame = {
     _count: GameCountAggregateOutputType | null
-    _avg: GameAvgAggregateOutputType | null
-    _sum: GameSumAggregateOutputType | null
     _min: GameMinAggregateOutputType | null
     _max: GameMaxAggregateOutputType | null
-  }
-
-  export type GameAvgAggregateOutputType = {
-    price: Decimal | null
-  }
-
-  export type GameSumAggregateOutputType = {
-    price: Decimal | null
   }
 
   export type GameMinAggregateOutputType = {
     id: string | null
     name: string | null
-    price: Decimal | null
     region: string | null
     platform: string | null
     createdAt: Date | null
@@ -3609,7 +3598,6 @@ export namespace Prisma {
   export type GameMaxAggregateOutputType = {
     id: string | null
     name: string | null
-    price: Decimal | null
     region: string | null
     platform: string | null
     createdAt: Date | null
@@ -3618,7 +3606,6 @@ export namespace Prisma {
   export type GameCountAggregateOutputType = {
     id: number
     name: number
-    price: number
     region: number
     platform: number
     createdAt: number
@@ -3626,18 +3613,9 @@ export namespace Prisma {
   }
 
 
-  export type GameAvgAggregateInputType = {
-    price?: true
-  }
-
-  export type GameSumAggregateInputType = {
-    price?: true
-  }
-
   export type GameMinAggregateInputType = {
     id?: true
     name?: true
-    price?: true
     region?: true
     platform?: true
     createdAt?: true
@@ -3646,7 +3624,6 @@ export namespace Prisma {
   export type GameMaxAggregateInputType = {
     id?: true
     name?: true
-    price?: true
     region?: true
     platform?: true
     createdAt?: true
@@ -3655,7 +3632,6 @@ export namespace Prisma {
   export type GameCountAggregateInputType = {
     id?: true
     name?: true
-    price?: true
     region?: true
     platform?: true
     createdAt?: true
@@ -3700,18 +3676,6 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Select which fields to average
-    **/
-    _avg?: GameAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: GameSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
      * Select which fields to find the minimum value
     **/
     _min?: GameMinAggregateInputType
@@ -3742,8 +3706,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: GameCountAggregateInputType | true
-    _avg?: GameAvgAggregateInputType
-    _sum?: GameSumAggregateInputType
     _min?: GameMinAggregateInputType
     _max?: GameMaxAggregateInputType
   }
@@ -3751,13 +3713,10 @@ export namespace Prisma {
   export type GameGroupByOutputType = {
     id: string
     name: string
-    price: Decimal
     region: string
     platform: string
     createdAt: Date
     _count: GameCountAggregateOutputType | null
-    _avg: GameAvgAggregateOutputType | null
-    _sum: GameSumAggregateOutputType | null
     _min: GameMinAggregateOutputType | null
     _max: GameMaxAggregateOutputType | null
   }
@@ -3779,7 +3738,6 @@ export namespace Prisma {
   export type GameSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
-    price?: boolean
     region?: boolean
     platform?: boolean
     createdAt?: boolean
@@ -3792,7 +3750,6 @@ export namespace Prisma {
   export type GameSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
-    price?: boolean
     region?: boolean
     platform?: boolean
     createdAt?: boolean
@@ -3801,7 +3758,6 @@ export namespace Prisma {
   export type GameSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
-    price?: boolean
     region?: boolean
     platform?: boolean
     createdAt?: boolean
@@ -3810,13 +3766,12 @@ export namespace Prisma {
   export type GameSelectScalar = {
     id?: boolean
     name?: boolean
-    price?: boolean
     region?: boolean
     platform?: boolean
     createdAt?: boolean
   }
 
-  export type GameOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "price" | "region" | "platform" | "createdAt", ExtArgs["result"]["game"]>
+  export type GameOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "region" | "platform" | "createdAt", ExtArgs["result"]["game"]>
   export type GameInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sellers?: boolean | Game$sellersArgs<ExtArgs>
     wishlist?: boolean | Game$wishlistArgs<ExtArgs>
@@ -3836,7 +3791,6 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
-      price: Prisma.Decimal
       region: string
       platform: string
       createdAt: Date
@@ -4268,7 +4222,6 @@ export namespace Prisma {
   interface GameFieldRefs {
     readonly id: FieldRef<"Game", 'String'>
     readonly name: FieldRef<"Game", 'String'>
-    readonly price: FieldRef<"Game", 'Decimal'>
     readonly region: FieldRef<"Game", 'String'>
     readonly platform: FieldRef<"Game", 'String'>
     readonly createdAt: FieldRef<"Game", 'DateTime'>
@@ -4761,40 +4714,64 @@ export namespace Prisma {
 
   export type AggregateGameSeller = {
     _count: GameSellerCountAggregateOutputType | null
+    _avg: GameSellerAvgAggregateOutputType | null
+    _sum: GameSellerSumAggregateOutputType | null
     _min: GameSellerMinAggregateOutputType | null
     _max: GameSellerMaxAggregateOutputType | null
+  }
+
+  export type GameSellerAvgAggregateOutputType = {
+    price: Decimal | null
+  }
+
+  export type GameSellerSumAggregateOutputType = {
+    price: Decimal | null
   }
 
   export type GameSellerMinAggregateOutputType = {
     gameId: string | null
     sellerId: string | null
+    price: Decimal | null
   }
 
   export type GameSellerMaxAggregateOutputType = {
     gameId: string | null
     sellerId: string | null
+    price: Decimal | null
   }
 
   export type GameSellerCountAggregateOutputType = {
     gameId: number
     sellerId: number
+    price: number
     _all: number
   }
 
 
+  export type GameSellerAvgAggregateInputType = {
+    price?: true
+  }
+
+  export type GameSellerSumAggregateInputType = {
+    price?: true
+  }
+
   export type GameSellerMinAggregateInputType = {
     gameId?: true
     sellerId?: true
+    price?: true
   }
 
   export type GameSellerMaxAggregateInputType = {
     gameId?: true
     sellerId?: true
+    price?: true
   }
 
   export type GameSellerCountAggregateInputType = {
     gameId?: true
     sellerId?: true
+    price?: true
     _all?: true
   }
 
@@ -4836,6 +4813,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: GameSellerAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: GameSellerSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: GameSellerMinAggregateInputType
@@ -4866,6 +4855,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: GameSellerCountAggregateInputType | true
+    _avg?: GameSellerAvgAggregateInputType
+    _sum?: GameSellerSumAggregateInputType
     _min?: GameSellerMinAggregateInputType
     _max?: GameSellerMaxAggregateInputType
   }
@@ -4873,7 +4864,10 @@ export namespace Prisma {
   export type GameSellerGroupByOutputType = {
     gameId: string
     sellerId: string
+    price: Decimal
     _count: GameSellerCountAggregateOutputType | null
+    _avg: GameSellerAvgAggregateOutputType | null
+    _sum: GameSellerSumAggregateOutputType | null
     _min: GameSellerMinAggregateOutputType | null
     _max: GameSellerMaxAggregateOutputType | null
   }
@@ -4895,6 +4889,7 @@ export namespace Prisma {
   export type GameSellerSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     gameId?: boolean
     sellerId?: boolean
+    price?: boolean
     game?: boolean | GameDefaultArgs<ExtArgs>
     seller?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["gameSeller"]>
@@ -4902,6 +4897,7 @@ export namespace Prisma {
   export type GameSellerSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     gameId?: boolean
     sellerId?: boolean
+    price?: boolean
     game?: boolean | GameDefaultArgs<ExtArgs>
     seller?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["gameSeller"]>
@@ -4909,6 +4905,7 @@ export namespace Prisma {
   export type GameSellerSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     gameId?: boolean
     sellerId?: boolean
+    price?: boolean
     game?: boolean | GameDefaultArgs<ExtArgs>
     seller?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["gameSeller"]>
@@ -4916,9 +4913,10 @@ export namespace Prisma {
   export type GameSellerSelectScalar = {
     gameId?: boolean
     sellerId?: boolean
+    price?: boolean
   }
 
-  export type GameSellerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"gameId" | "sellerId", ExtArgs["result"]["gameSeller"]>
+  export type GameSellerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"gameId" | "sellerId" | "price", ExtArgs["result"]["gameSeller"]>
   export type GameSellerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     game?: boolean | GameDefaultArgs<ExtArgs>
     seller?: boolean | UserDefaultArgs<ExtArgs>
@@ -4941,6 +4939,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       gameId: string
       sellerId: string
+      price: Prisma.Decimal
     }, ExtArgs["result"]["gameSeller"]>
     composites: {}
   }
@@ -5368,6 +5367,7 @@ export namespace Prisma {
   interface GameSellerFieldRefs {
     readonly gameId: FieldRef<"GameSeller", 'String'>
     readonly sellerId: FieldRef<"GameSeller", 'String'>
+    readonly price: FieldRef<"GameSeller", 'Decimal'>
   }
     
 
@@ -7963,7 +7963,6 @@ export namespace Prisma {
   export const GameScalarFieldEnum: {
     id: 'id',
     name: 'name',
-    price: 'price',
     region: 'region',
     platform: 'platform',
     createdAt: 'createdAt'
@@ -7974,7 +7973,8 @@ export namespace Prisma {
 
   export const GameSellerScalarFieldEnum: {
     gameId: 'gameId',
-    sellerId: 'sellerId'
+    sellerId: 'sellerId',
+    price: 'price'
   };
 
   export type GameSellerScalarFieldEnum = (typeof GameSellerScalarFieldEnum)[keyof typeof GameSellerScalarFieldEnum]
@@ -8219,7 +8219,6 @@ export namespace Prisma {
     NOT?: GameWhereInput | GameWhereInput[]
     id?: UuidFilter<"Game"> | string
     name?: StringFilter<"Game"> | string
-    price?: DecimalFilter<"Game"> | Decimal | DecimalJsLike | number | string
     region?: StringFilter<"Game"> | string
     platform?: StringFilter<"Game"> | string
     createdAt?: DateTimeFilter<"Game"> | Date | string
@@ -8231,7 +8230,6 @@ export namespace Prisma {
   export type GameOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
-    price?: SortOrder
     region?: SortOrder
     platform?: SortOrder
     createdAt?: SortOrder
@@ -8246,7 +8244,6 @@ export namespace Prisma {
     OR?: GameWhereInput[]
     NOT?: GameWhereInput | GameWhereInput[]
     name?: StringFilter<"Game"> | string
-    price?: DecimalFilter<"Game"> | Decimal | DecimalJsLike | number | string
     region?: StringFilter<"Game"> | string
     platform?: StringFilter<"Game"> | string
     createdAt?: DateTimeFilter<"Game"> | Date | string
@@ -8258,15 +8255,12 @@ export namespace Prisma {
   export type GameOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
-    price?: SortOrder
     region?: SortOrder
     platform?: SortOrder
     createdAt?: SortOrder
     _count?: GameCountOrderByAggregateInput
-    _avg?: GameAvgOrderByAggregateInput
     _max?: GameMaxOrderByAggregateInput
     _min?: GameMinOrderByAggregateInput
-    _sum?: GameSumOrderByAggregateInput
   }
 
   export type GameScalarWhereWithAggregatesInput = {
@@ -8275,7 +8269,6 @@ export namespace Prisma {
     NOT?: GameScalarWhereWithAggregatesInput | GameScalarWhereWithAggregatesInput[]
     id?: UuidWithAggregatesFilter<"Game"> | string
     name?: StringWithAggregatesFilter<"Game"> | string
-    price?: DecimalWithAggregatesFilter<"Game"> | Decimal | DecimalJsLike | number | string
     region?: StringWithAggregatesFilter<"Game"> | string
     platform?: StringWithAggregatesFilter<"Game"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Game"> | Date | string
@@ -8287,6 +8280,7 @@ export namespace Prisma {
     NOT?: GameSellerWhereInput | GameSellerWhereInput[]
     gameId?: UuidFilter<"GameSeller"> | string
     sellerId?: UuidFilter<"GameSeller"> | string
+    price?: DecimalFilter<"GameSeller"> | Decimal | DecimalJsLike | number | string
     game?: XOR<GameScalarRelationFilter, GameWhereInput>
     seller?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
@@ -8294,6 +8288,7 @@ export namespace Prisma {
   export type GameSellerOrderByWithRelationInput = {
     gameId?: SortOrder
     sellerId?: SortOrder
+    price?: SortOrder
     game?: GameOrderByWithRelationInput
     seller?: UserOrderByWithRelationInput
   }
@@ -8305,6 +8300,7 @@ export namespace Prisma {
     NOT?: GameSellerWhereInput | GameSellerWhereInput[]
     gameId?: UuidFilter<"GameSeller"> | string
     sellerId?: UuidFilter<"GameSeller"> | string
+    price?: DecimalFilter<"GameSeller"> | Decimal | DecimalJsLike | number | string
     game?: XOR<GameScalarRelationFilter, GameWhereInput>
     seller?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "gameId_sellerId">
@@ -8312,9 +8308,12 @@ export namespace Prisma {
   export type GameSellerOrderByWithAggregationInput = {
     gameId?: SortOrder
     sellerId?: SortOrder
+    price?: SortOrder
     _count?: GameSellerCountOrderByAggregateInput
+    _avg?: GameSellerAvgOrderByAggregateInput
     _max?: GameSellerMaxOrderByAggregateInput
     _min?: GameSellerMinOrderByAggregateInput
+    _sum?: GameSellerSumOrderByAggregateInput
   }
 
   export type GameSellerScalarWhereWithAggregatesInput = {
@@ -8323,6 +8322,7 @@ export namespace Prisma {
     NOT?: GameSellerScalarWhereWithAggregatesInput | GameSellerScalarWhereWithAggregatesInput[]
     gameId?: UuidWithAggregatesFilter<"GameSeller"> | string
     sellerId?: UuidWithAggregatesFilter<"GameSeller"> | string
+    price?: DecimalWithAggregatesFilter<"GameSeller"> | Decimal | DecimalJsLike | number | string
   }
 
   export type WishlistItemWhereInput = {
@@ -8557,7 +8557,6 @@ export namespace Prisma {
   export type GameCreateInput = {
     id?: string
     name: string
-    price: Decimal | DecimalJsLike | number | string
     region: string
     platform: string
     createdAt?: Date | string
@@ -8569,7 +8568,6 @@ export namespace Prisma {
   export type GameUncheckedCreateInput = {
     id?: string
     name: string
-    price: Decimal | DecimalJsLike | number | string
     region: string
     platform: string
     createdAt?: Date | string
@@ -8581,7 +8579,6 @@ export namespace Prisma {
   export type GameUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     region?: StringFieldUpdateOperationsInput | string
     platform?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -8593,7 +8590,6 @@ export namespace Prisma {
   export type GameUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     region?: StringFieldUpdateOperationsInput | string
     platform?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -8605,7 +8601,6 @@ export namespace Prisma {
   export type GameCreateManyInput = {
     id?: string
     name: string
-    price: Decimal | DecimalJsLike | number | string
     region: string
     platform: string
     createdAt?: Date | string
@@ -8614,7 +8609,6 @@ export namespace Prisma {
   export type GameUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     region?: StringFieldUpdateOperationsInput | string
     platform?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -8623,13 +8617,13 @@ export namespace Prisma {
   export type GameUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     region?: StringFieldUpdateOperationsInput | string
     platform?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type GameSellerCreateInput = {
+    price: Decimal | DecimalJsLike | number | string
     game: GameCreateNestedOneWithoutSellersInput
     seller: UserCreateNestedOneWithoutListingsInput
   }
@@ -8637,9 +8631,11 @@ export namespace Prisma {
   export type GameSellerUncheckedCreateInput = {
     gameId: string
     sellerId: string
+    price: Decimal | DecimalJsLike | number | string
   }
 
   export type GameSellerUpdateInput = {
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     game?: GameUpdateOneRequiredWithoutSellersNestedInput
     seller?: UserUpdateOneRequiredWithoutListingsNestedInput
   }
@@ -8647,20 +8643,23 @@ export namespace Prisma {
   export type GameSellerUncheckedUpdateInput = {
     gameId?: StringFieldUpdateOperationsInput | string
     sellerId?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type GameSellerCreateManyInput = {
     gameId: string
     sellerId: string
+    price: Decimal | DecimalJsLike | number | string
   }
 
   export type GameSellerUpdateManyMutationInput = {
-
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type GameSellerUncheckedUpdateManyInput = {
     gameId?: StringFieldUpdateOperationsInput | string
     sellerId?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type WishlistItemCreateInput = {
@@ -8926,6 +8925,30 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type GameCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    region?: SortOrder
+    platform?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type GameMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    region?: SortOrder
+    platform?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type GameMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    region?: SortOrder
+    platform?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type DecimalFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
@@ -8935,57 +8958,6 @@ export namespace Prisma {
     gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
-  }
-
-  export type GameCountOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    price?: SortOrder
-    region?: SortOrder
-    platform?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type GameAvgOrderByAggregateInput = {
-    price?: SortOrder
-  }
-
-  export type GameMaxOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    price?: SortOrder
-    region?: SortOrder
-    platform?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type GameMinOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    price?: SortOrder
-    region?: SortOrder
-    platform?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type GameSumOrderByAggregateInput = {
-    price?: SortOrder
-  }
-
-  export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedDecimalFilter<$PrismaModel>
-    _sum?: NestedDecimalFilter<$PrismaModel>
-    _min?: NestedDecimalFilter<$PrismaModel>
-    _max?: NestedDecimalFilter<$PrismaModel>
   }
 
   export type GameScalarRelationFilter = {
@@ -9006,16 +8978,43 @@ export namespace Prisma {
   export type GameSellerCountOrderByAggregateInput = {
     gameId?: SortOrder
     sellerId?: SortOrder
+    price?: SortOrder
+  }
+
+  export type GameSellerAvgOrderByAggregateInput = {
+    price?: SortOrder
   }
 
   export type GameSellerMaxOrderByAggregateInput = {
     gameId?: SortOrder
     sellerId?: SortOrder
+    price?: SortOrder
   }
 
   export type GameSellerMinOrderByAggregateInput = {
     gameId?: SortOrder
     sellerId?: SortOrder
+    price?: SortOrder
+  }
+
+  export type GameSellerSumOrderByAggregateInput = {
+    price?: SortOrder
+  }
+
+  export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedDecimalFilter<$PrismaModel>
+    _sum?: NestedDecimalFilter<$PrismaModel>
+    _min?: NestedDecimalFilter<$PrismaModel>
+    _max?: NestedDecimalFilter<$PrismaModel>
   }
 
   export type WishlistItemUserIdGameIdCompoundUniqueInput = {
@@ -9282,14 +9281,6 @@ export namespace Prisma {
     connect?: CartItemWhereUniqueInput | CartItemWhereUniqueInput[]
   }
 
-  export type DecimalFieldUpdateOperationsInput = {
-    set?: Decimal | DecimalJsLike | number | string
-    increment?: Decimal | DecimalJsLike | number | string
-    decrement?: Decimal | DecimalJsLike | number | string
-    multiply?: Decimal | DecimalJsLike | number | string
-    divide?: Decimal | DecimalJsLike | number | string
-  }
-
   export type GameSellerUpdateManyWithoutGameNestedInput = {
     create?: XOR<GameSellerCreateWithoutGameInput, GameSellerUncheckedCreateWithoutGameInput> | GameSellerCreateWithoutGameInput[] | GameSellerUncheckedCreateWithoutGameInput[]
     connectOrCreate?: GameSellerCreateOrConnectWithoutGameInput | GameSellerCreateOrConnectWithoutGameInput[]
@@ -9384,6 +9375,14 @@ export namespace Prisma {
     create?: XOR<UserCreateWithoutListingsInput, UserUncheckedCreateWithoutListingsInput>
     connectOrCreate?: UserCreateOrConnectWithoutListingsInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type DecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string
+    increment?: Decimal | DecimalJsLike | number | string
+    decrement?: Decimal | DecimalJsLike | number | string
+    multiply?: Decimal | DecimalJsLike | number | string
+    divide?: Decimal | DecimalJsLike | number | string
   }
 
   export type GameUpdateOneRequiredWithoutSellersNestedInput = {
@@ -9668,11 +9667,13 @@ export namespace Prisma {
   }
 
   export type GameSellerCreateWithoutSellerInput = {
+    price: Decimal | DecimalJsLike | number | string
     game: GameCreateNestedOneWithoutSellersInput
   }
 
   export type GameSellerUncheckedCreateWithoutSellerInput = {
     gameId: string
+    price: Decimal | DecimalJsLike | number | string
   }
 
   export type GameSellerCreateOrConnectWithoutSellerInput = {
@@ -9758,14 +9759,17 @@ export namespace Prisma {
     NOT?: GameSellerScalarWhereInput | GameSellerScalarWhereInput[]
     gameId?: UuidFilter<"GameSeller"> | string
     sellerId?: UuidFilter<"GameSeller"> | string
+    price?: DecimalFilter<"GameSeller"> | Decimal | DecimalJsLike | number | string
   }
 
   export type GameSellerCreateWithoutGameInput = {
+    price: Decimal | DecimalJsLike | number | string
     seller: UserCreateNestedOneWithoutListingsInput
   }
 
   export type GameSellerUncheckedCreateWithoutGameInput = {
     sellerId: string
+    price: Decimal | DecimalJsLike | number | string
   }
 
   export type GameSellerCreateOrConnectWithoutGameInput = {
@@ -9871,7 +9875,6 @@ export namespace Prisma {
   export type GameCreateWithoutSellersInput = {
     id?: string
     name: string
-    price: Decimal | DecimalJsLike | number | string
     region: string
     platform: string
     createdAt?: Date | string
@@ -9882,7 +9885,6 @@ export namespace Prisma {
   export type GameUncheckedCreateWithoutSellersInput = {
     id?: string
     name: string
-    price: Decimal | DecimalJsLike | number | string
     region: string
     platform: string
     createdAt?: Date | string
@@ -9936,7 +9938,6 @@ export namespace Prisma {
   export type GameUpdateWithoutSellersInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     region?: StringFieldUpdateOperationsInput | string
     platform?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9947,7 +9948,6 @@ export namespace Prisma {
   export type GameUncheckedUpdateWithoutSellersInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     region?: StringFieldUpdateOperationsInput | string
     platform?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10018,7 +10018,6 @@ export namespace Prisma {
   export type GameCreateWithoutWishlistInput = {
     id?: string
     name: string
-    price: Decimal | DecimalJsLike | number | string
     region: string
     platform: string
     createdAt?: Date | string
@@ -10029,7 +10028,6 @@ export namespace Prisma {
   export type GameUncheckedCreateWithoutWishlistInput = {
     id?: string
     name: string
-    price: Decimal | DecimalJsLike | number | string
     region: string
     platform: string
     createdAt?: Date | string
@@ -10089,7 +10087,6 @@ export namespace Prisma {
   export type GameUpdateWithoutWishlistInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     region?: StringFieldUpdateOperationsInput | string
     platform?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10100,7 +10097,6 @@ export namespace Prisma {
   export type GameUncheckedUpdateWithoutWishlistInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     region?: StringFieldUpdateOperationsInput | string
     platform?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10138,7 +10134,6 @@ export namespace Prisma {
   export type GameCreateWithoutCartInput = {
     id?: string
     name: string
-    price: Decimal | DecimalJsLike | number | string
     region: string
     platform: string
     createdAt?: Date | string
@@ -10149,7 +10144,6 @@ export namespace Prisma {
   export type GameUncheckedCreateWithoutCartInput = {
     id?: string
     name: string
-    price: Decimal | DecimalJsLike | number | string
     region: string
     platform: string
     createdAt?: Date | string
@@ -10209,7 +10203,6 @@ export namespace Prisma {
   export type GameUpdateWithoutCartInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     region?: StringFieldUpdateOperationsInput | string
     platform?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10220,7 +10213,6 @@ export namespace Prisma {
   export type GameUncheckedUpdateWithoutCartInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     region?: StringFieldUpdateOperationsInput | string
     platform?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10241,6 +10233,7 @@ export namespace Prisma {
 
   export type GameSellerCreateManySellerInput = {
     gameId: string
+    price: Decimal | DecimalJsLike | number | string
   }
 
   export type WishlistItemUpdateWithoutUserInput = {
@@ -10277,19 +10270,23 @@ export namespace Prisma {
   }
 
   export type GameSellerUpdateWithoutSellerInput = {
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     game?: GameUpdateOneRequiredWithoutSellersNestedInput
   }
 
   export type GameSellerUncheckedUpdateWithoutSellerInput = {
     gameId?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type GameSellerUncheckedUpdateManyWithoutSellerInput = {
     gameId?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type GameSellerCreateManyGameInput = {
     sellerId: string
+    price: Decimal | DecimalJsLike | number | string
   }
 
   export type WishlistItemCreateManyGameInput = {
@@ -10304,15 +10301,18 @@ export namespace Prisma {
   }
 
   export type GameSellerUpdateWithoutGameInput = {
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     seller?: UserUpdateOneRequiredWithoutListingsNestedInput
   }
 
   export type GameSellerUncheckedUpdateWithoutGameInput = {
     sellerId?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type GameSellerUncheckedUpdateManyWithoutGameInput = {
     sellerId?: StringFieldUpdateOperationsInput | string
+    price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type WishlistItemUpdateWithoutGameInput = {
