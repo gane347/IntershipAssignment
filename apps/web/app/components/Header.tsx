@@ -5,6 +5,7 @@ import Link from "next/link";
 import SearchIcon from '@mui/icons-material/Search';
 import Image from "next/image";
 import MenuIcon from '@mui/icons-material/MenuOutlined';
+import CloseIcon from '@mui/icons-material/Close';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import LogoImage from "../assets/logoFull.svg";
@@ -12,7 +13,7 @@ import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCartOutlined';
 import FavoriteIcon from '@mui/icons-material/FavoriteBorderOutlined';
 
-const categories = ["Mobile games", "Games", "PSN", "Xbox", "Nintendo"];
+const categories = ["All offers","Mobile games", "Games", "PSN", "Xbox", "Nintendo"];
 
 const HeaderRoot = styled('header')({
   backgroundColor: '#4618ac',
@@ -116,43 +117,65 @@ const MobileSearch = styled('div')(({ theme }) => ({
   },
 }));
 
-const CategoriesNav = styled('nav')({
-  backgroundColor: '#f8fafc',
-  borderTop: '1px solid #e2e8f0',
+const DrawerBackdrop = styled('div')({
+  backgroundColor: 'rgba(15, 23, 42, 0.45)',
+  inset: 0,
+  position: 'fixed',
+  zIndex: 10,
 });
 
-const CategoriesInner = styled('div')(({ theme }) => ({
+const CategoriesDrawer = styled('aside')(({ theme }) => ({
+  backgroundColor: 'var(--background)',
+  boxShadow: '0 10px 30px rgba(15, 23, 42, 0.2)',
   display: 'flex',
   flexDirection: 'column',
-  margin: '0 auto',
-  maxWidth: '80rem',
-  padding: theme.spacing(0.75, 2.5),
-  [theme.breakpoints.up('lg')]: {
-    flexDirection: 'row',
-    gap: theme.spacing(4),
-    paddingLeft: theme.spacing(4),
-    paddingRight: theme.spacing(4),
-  },
+  height: '100%',
+  left: 0,
+  maxWidth: '22rem',
+  overflowY: 'auto',
+  padding: theme.spacing(3),
+  position: 'fixed',
+  top: 0,
+  width: '85%',
+  zIndex: 11,
 }));
 
-const CategoryLink = styled('a')(({ theme }) => ({
+const DrawerHeader = styled('div')({
+  alignItems: 'center',
+  display: 'flex',
+  justifyContent: 'space-between',
+  marginBottom: '2rem',
+});
+
+const DrawerCloseButton = styled('button')(({ theme }) => ({
   '&:hover': {
-    color: '#23a956',
+    color: '#e76a8c',
+    transition: 'color 150ms ease',
   },
-  borderBottom: '1px solid #e2e8f0',
-  color: '#334155',
-  fontSize: '0.875rem',
-  fontWeight: 600,
-  padding: theme.spacing(1.5, 0),
+  alignItems: 'center',
+  background: 'transparent',
+  border: 0,
+  borderRadius: theme.shape.borderRadius,
+  cursor: 'pointer',
+  display: 'flex',
+  justifyContent: 'center',
+  padding: theme.spacing(1),
+}));
+
+const DrawerList = styled('div')({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '0.5rem',
+});
+
+const DrawerCategoryLink = styled('a')(({ theme }) => ({
+  '&:hover': {
+    color: 'var(--accent)',
+  },
+  fontSize: '1rem',
+  fontWeight: 400,
+  padding: theme.spacing(0.5),
   textDecoration: 'none',
-  '&:last-of-type': {
-    borderBottom: 0,
-  },
-  [theme.breakpoints.up('lg')]: {
-    borderBottom: 0,
-    paddingBottom: theme.spacing(1),
-    paddingTop: theme.spacing(1),
-  },
 }));
 
 export default function Header() {
@@ -211,19 +234,34 @@ export default function Header() {
         </form>
       </MobileSearch>
 
-      {menuOpen && (
-        <CategoriesNav aria-label="Categories">
-          <CategoriesInner>
-            {categories.map((category) => (
-              <CategoryLink href="#" key={category}>
-                {category}
-              </CategoryLink>
-            ))}
-          </CategoriesInner>
-        </CategoriesNav>
-      )}
-
     </HeaderRoot>
+
+    {menuOpen && (
+      <>
+        <DrawerBackdrop onClick={() => setMenuOpen(false)} />
+        <CategoriesDrawer aria-label="Categories">
+          <DrawerHeader>
+            <Logo href="/" onClick={() => setMenuOpen(false)}>
+              <Image src={LogoImage} alt="Eneba" width={155} />
+            </Logo>
+            <DrawerCloseButton
+              aria-label="Close categories menu"
+              onClick={() => setMenuOpen(false)}
+              type="button"
+            >
+              <CloseIcon />
+            </DrawerCloseButton>
+          </DrawerHeader>
+          <DrawerList>
+            {categories.map((category) => (
+              <DrawerCategoryLink href="#" key={category} onClick={() => setMenuOpen(false)}>
+                {category}
+              </DrawerCategoryLink>
+            ))}
+          </DrawerList>
+        </CategoriesDrawer>
+      </>
+    )}
     
     <LowerHeader>
       <MenuButton
