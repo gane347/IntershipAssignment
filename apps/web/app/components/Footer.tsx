@@ -1,5 +1,81 @@
 "use client";
 import FacebookIcon from '@mui/icons-material/FacebookOutlined';
+import { styled } from '@mui/material/styles';
+
+const FooterRoot = styled('footer')({
+  backgroundColor: '#020617',
+  color: '#cbd5e1',
+});
+
+const FooterContent = styled('div')(({ theme }) => ({
+  display: 'grid',
+  gap: theme.spacing(5),
+  maxWidth: '80rem',
+  margin: '0 auto',
+  padding: theme.spacing(6, 2.5),
+  [theme.breakpoints.up('sm')]: {
+    gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+  },
+  [theme.breakpoints.up('lg')]: {
+    gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
+    paddingLeft: theme.spacing(4),
+    paddingRight: theme.spacing(4),
+  },
+}));
+
+const FooterHeading = styled('h2')({
+  color: '#fff',
+  fontSize: '0.875rem',
+  fontWeight: 700,
+  letterSpacing: '0.05em',
+  margin: '0 0 1rem',
+  textTransform: 'uppercase',
+});
+
+const FooterList = styled('ul')({
+  display: 'grid',
+  gap: '0.75rem',
+  listStyle: 'none',
+  margin: 0,
+  padding: 0,
+  fontSize: '0.875rem',
+});
+
+const FooterLink = styled('a')({
+  color: 'inherit',
+  textDecoration: 'none',
+  transition: 'color 150ms ease',
+  '&:hover': {
+    color: '#5cdb88',
+  },
+});
+
+const SocialLinks = styled('div')({
+  display: 'flex',
+  gap: '0.75rem',
+});
+
+const SocialLink = styled('a')({
+  alignItems: 'center',
+  backgroundColor: '#1e293b',
+  borderRadius: '9999px',
+  color: '#cbd5e1',
+  display: 'flex',
+  justifyContent: 'center',
+  padding: '0.75rem',
+  transition: 'background-color 150ms ease',
+  '&:hover': {
+    backgroundColor: '#35c66b',
+  },
+});
+
+const FooterCopyright = styled('div')({
+  borderTop: '1px solid #1e293b',
+  color: '#64748b',
+  fontSize: '0.75rem',
+  padding: '1.25rem 1.25rem',
+  textAlign: 'center',
+});
 
 function InstagramIcon() {
   return (
@@ -19,37 +95,37 @@ const columns = [
 
 export default function Footer() {
   return (
-    <footer className="bg-slate-950 text-slate-300">
-      <div className="mx-auto grid max-w-7xl gap-10 px-5 py-12 sm:grid-cols-2 lg:grid-cols-4 lg:px-8">
+    <FooterRoot>
+      <FooterContent>
         {columns.map((column) => (
           <div key={column.title}>
-            <h2 className="mb-4 text-sm font-bold uppercase tracking-wider text-white">{column.title}</h2>
-            <ul className="space-y-3 text-sm">
+            <FooterHeading>{column.title}</FooterHeading>
+            <FooterList>
               {column.links.map((link) => (
                 <li key={link}>
-                  <a className="transition hover:text-[#5cdb88]" href="#">
+                  <FooterLink href="#">
                     {link}
-                  </a>
+                  </FooterLink>
                 </li>
               ))}
-            </ul>
+            </FooterList>
           </div>
         ))}
         <div>
-          <h2 className="mb-4 text-sm font-bold uppercase tracking-wider text-white">Follow Us</h2>
-          <div className="flex gap-3">
-            <a aria-label="Facebook" className="rounded-full bg-slate-800 p-3 transition hover:bg-[#35c66b]" href="#">
+          <FooterHeading>Follow Us</FooterHeading>
+          <SocialLinks>
+            <SocialLink aria-label="Facebook" href="#">
               <FacebookIcon />
-            </a>
-            <a aria-label="Instagram" className="rounded-full bg-slate-800 p-3 transition hover:bg-[#35c66b]" href="#">
+            </SocialLink>
+            <SocialLink aria-label="Instagram" href="#">
               <InstagramIcon />
-            </a>
-          </div>
+            </SocialLink>
+          </SocialLinks>
         </div>
-      </div>
-      <div className="border-t border-slate-800 px-5 py-5 text-center text-xs text-slate-500">
+      </FooterContent>
+      <FooterCopyright>
         No rights reserved. This is a clone of Eneba for the application purpose only. All the content belongs to their respective owners.
-      </div>
-    </footer>
+      </FooterCopyright>
+    </FooterRoot>
   );
 }
