@@ -1,6 +1,7 @@
 "use client";
 import FacebookIcon from '@mui/icons-material/FacebookOutlined';
 import { styled } from '@mui/material/styles';
+import Link from 'next/link';
 
 const FooterRoot = styled('footer')({
   backgroundColor: 'rgba(0, 0, 0, 0.75)',
@@ -17,7 +18,7 @@ const FooterContent = styled('div')(({ theme }) => ({
     gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
   },
   [theme.breakpoints.up('lg')]: {
-    gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
+    gridTemplateColumns: 'repeat(6, minmax(0, 1fr))',
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4),
   },
@@ -40,7 +41,7 @@ const FooterList = styled('ul')({
   fontSize: '0.875rem',
 });
 
-const FooterLink = styled('a')({
+const FooterLink = styled(Link)({
   color: 'inherit',
   textDecoration: 'none',
   transition: 'color 150ms ease',
@@ -80,9 +81,11 @@ function InstagramIcon() {
 }
 
 const columns = [
-  { title: "About Eneba", links: ["About us"] },
-  { title: "Buy", links: ["How to buy", "Collections"] },
-  { title: "Help", links: ["FAQ", "How to activate game", "Return policy"] },
+  { title: "About Eneba", links: ["About us", "Contact us", "Careers", "Eneba trust & transparency"] },
+  { title: "Buy", links: ["How to buy", "Collections", "Loyalty program", "Discounts"] },
+  { title: "Help", links: ["FAQ", "How to activate game", "Create a ticket", "Return policy", "Content reporting"] },
+  { title: "Community", links: ["Gaming news", "Giveaways", "Become affiliate", "Snakzy: Play and Earn"] },
+  { title: "Business", links: ["Sell on Eneba", "Advertise with us"] },
 ];
 
 export default function Footer() {
@@ -95,9 +98,7 @@ export default function Footer() {
             <FooterList>
               {column.links.map((link) => (
                 <li key={link}>
-                  <FooterLink href="#">
-                    {link}
-                  </FooterLink>
+                  <FooterLink href="#">{link}</FooterLink>
                 </li>
               ))}
             </FooterList>
