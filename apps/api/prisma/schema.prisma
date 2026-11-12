@@ -15,3 +15,64 @@ model Item {
 
   @@map("items")
 }
+
+model User {
+  id            String         @id @default(uuid()) @db.Uuid
+  email         String         @unique @db.VarChar(255)
+  username      String         @unique @db.VarChar(50)
+  passwordHash  String         @map("password_hash")
+  isSeller      Boolean        @default(false) @map("is_seller")
+  createdAt     DateTime       @default(now()) @map("created_at")
+  wishlist      WishlistItem[]
+  cart          CartItem[]
+  listings      GameSeller[]
+
+  @@map("users")
+}
+
+model Game {
+  id        String       @id @default(uuid()) @db.Uuid
+  name      String       @db.VarChar(150)
+  region    String       @db.VarChar(50)
+  platform  String       @db.VarChar(50)
+  createdAt DateTime     @default(now()) @map("created_at")
+  sellers   GameSeller[]
+  wishlist  WishlistItem[]
+  cart      CartItem[]
+
+  @@map("games")
+}
+
+model GameSeller {
+  gameId   String   @map("game_id") @db.Uuid
+  sellerId String   @map("seller_id") @db.Uuid
+  price    Decimal  @db.Decimal(10, 2)
+  game     Game    @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  seller   User    @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+
+  @@id([gameId, sellerId])
+  @@map("game_sellers")
+}
+
+model WishlistItem {
+  userId    String   @map("user_id") @db.Uuid
+  gameId    String   @map("game_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  game      Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@id([userId, gameId])
+  @@map("wishlist_items")
+}
+
+model CartItem {
+  userId    String   @map("user_id") @db.Uuid
+  gameId    String   @map("game_id") @db.Uuid
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now()) @map("created_at")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  game      Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@id([userId, gameId])
+  @@map("cart_items")
+}

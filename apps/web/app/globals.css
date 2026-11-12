@@ -7,8 +7,10 @@
 
 :root {
   --background: #4618ac;
+    --background-dark: #1f0a4e;
   --foreground: #ffffff;
   --accent:#fad318;
+  --accent-dark: #f5a623;
   --text-subtle: #b3aac9;
 }
 
@@ -22,8 +24,11 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #4618ac;
+    --background-dark: #1f0a4e;
     --foreground: #ffffff;
     --accent:#fad318;
+  --accent-dark: #f5a623;
+  --text-subtle: #b3aac9;
   }
 }
 

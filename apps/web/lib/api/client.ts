@@ -18,3 +18,14 @@ export async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> 
   }
   return res.json() as Promise<T>;
 }
+
+export async function authenticatedApiFetch<T>(path: string, init?: RequestInit): Promise<T> {
+  const token = typeof window !== "undefined" ? window.localStorage.getItem("eneba_access_token") : null;
+  return apiFetch<T>(path, {
+    ...init,
+    headers: {
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...init?.headers,
+    },
+  });
+}
