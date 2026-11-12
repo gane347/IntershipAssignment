@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Eneba",
+  title: "Store",
   description: "Buy games, gift cards and more",
 };
 

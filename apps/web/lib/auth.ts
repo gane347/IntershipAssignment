@@ -13,7 +13,7 @@ type AuthResponse = {
   token: string;
 };
 
-const TOKEN_KEY = "eneba_access_token";
+const TOKEN_KEY = "store_access_token";
 
 function saveSession(response: AuthResponse) {
   window.localStorage.setItem(TOKEN_KEY, response.token);

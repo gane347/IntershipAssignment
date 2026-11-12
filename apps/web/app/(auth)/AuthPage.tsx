@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { styled } from "@mui/material/styles";
 import { login, register } from "@/lib/auth";
-import LogoImage from "../assets/logoFull.svg";
+import LogoImage from "../assets/logo.svg";
 
 type AuthMode = "login" | "register";
 
@@ -162,7 +162,7 @@ export default function AuthPage({ mode }: { mode: AuthMode }) {
   return (
     <Page>
       <LogoLink href="/">
-        <Image alt="Eneba" height={48} priority src={LogoImage} width={155} />
+        <Image alt="logo" priority src={LogoImage} width={35} />
       </LogoLink>
       <Content>
         <Quote>

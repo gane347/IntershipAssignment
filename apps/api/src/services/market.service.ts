@@ -51,7 +51,7 @@ export const marketService = {
         name: input.name,
         region: input.region,
         platform: input.platform,
-        digitalKeyEncrypted: encryptDigitalKey(`ENEBA-${randomUUID().replaceAll("-", "").slice(0, 20).toUpperCase()}`),
+        digitalKeyEncrypted: encryptDigitalKey(`KEY-${randomUUID().replaceAll("-", "").slice(0, 20).toUpperCase()}`),
         sellers: { create: { sellerId, price: input.price } },
       },
       include: { sellers: { select: { sellerId: true, price: true } } },

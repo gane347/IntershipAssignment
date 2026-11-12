@@ -139,7 +139,7 @@ export default function Home() {
       <Content>
         <Intro>
           <Title>Find your next game.</Title>
-          <Subtitle>Browse all games listed by Eneba sellers.</Subtitle>
+          <Subtitle>Browse all games listed by sellers.</Subtitle>
         </Intro>
         {error && <Status>{error}</Status>}
         {!error && !games && <Status>Loading games...</Status>}

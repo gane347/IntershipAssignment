@@ -4,7 +4,7 @@ export type GuestCartItem = {
   quantity: number;
 };
 
-const STORAGE_KEY = "eneba_guest_cart";
+const STORAGE_KEY = "store_guest_cart";
 
 export function getGuestCart(): GuestCartItem[] {
   if (typeof window === "undefined") return [];

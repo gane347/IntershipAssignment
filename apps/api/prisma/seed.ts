@@ -266,7 +266,7 @@ async function seed() {
 
   for (const game of games) {
     const encryptedDigitalKey = encryptDigitalKey(
-      `ENEBA-${game.id.replaceAll("-", "").slice(-20).toUpperCase()}`,
+      `KEY-${game.id.replaceAll("-", "").slice(-20).toUpperCase()}`,
     );
     await prisma.game.upsert({
       where: { id: game.id },

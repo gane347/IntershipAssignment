@@ -81,11 +81,11 @@ function InstagramIcon() {
 }
 
 const columns = [
-  { title: "About Eneba", links: ["About us", "Contact us", "Careers", "Eneba trust & transparency"] },
+  { title: "About the store", links: ["About us", "Contact us", "Careers", "Trust & transparency"] },
   { title: "Buy", links: ["How to buy", "Collections", "Loyalty program", "Discounts"] },
   { title: "Help", links: ["FAQ", "How to activate game", "Create a ticket", "Return policy", "Content reporting"] },
   { title: "Community", links: ["Gaming news", "Giveaways", "Become affiliate", "Snakzy: Play and Earn"] },
-  { title: "Business", links: ["Sell on Eneba", "Advertise with us"] },
+  { title: "Business", links: ["Sell on the store", "Advertise with us"] },
 ];
 
 export default function Footer() {
@@ -117,7 +117,7 @@ export default function Footer() {
         </div>
       </FooterContent>
       <FooterCopyright>
-        No rights reserved. This is a clone of Eneba for the application purpose only. All the content belongs to their respective owners.
+        No rights reserved. This is application purpose only. All the content belongs to their respective owners.
       </FooterCopyright>
     </FooterRoot>
   );

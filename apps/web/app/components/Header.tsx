@@ -8,7 +8,7 @@ import MenuIcon from '@mui/icons-material/MenuOutlined';
 import CloseIcon from '@mui/icons-material/Close';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
-import LogoImage from "../assets/logoFull.svg";
+import LogoImage from "../assets/logo.svg";
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCartOutlined';
 import FavoriteIcon from '@mui/icons-material/FavoriteBorderOutlined';
@@ -198,7 +198,7 @@ export default function Header() {
       <HeaderMain>
 
         <Logo href="/">
-          <Image src={LogoImage} alt="Eneba" width={155} />
+          <Image src={LogoImage} alt="logo" width={35} />
         </Logo>
 
         <SearchForm role="search">
@@ -267,7 +267,7 @@ export default function Header() {
         <CategoriesDrawer aria-label="Categories">
           <DrawerHeader>
             <Logo href="/" onClick={() => setMenuOpen(false)}>
-              <Image src={LogoImage} alt="Eneba" width={155} />
+              <Image src={LogoImage} alt="logo" width={35} />
             </Logo>
             <DrawerCloseButton
               aria-label="Close categories menu"
