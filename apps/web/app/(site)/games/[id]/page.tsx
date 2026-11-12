@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Suspense } from "react";
 import { useParams } from "next/navigation";
+import Link from "next/link";
 import { styled } from "@mui/material/styles";
 import { apiFetch, authenticatedApiFetch } from "@/lib/api/client";
 import { addToGuestCart } from "@/lib/guest-cart";
@@ -82,6 +83,14 @@ const CartButton = styled("button")({
   fontWeight: 600,
   padding: "0.75rem 1rem",
 });
+const FavouriteButton = styled("button")({
+  backgroundColor: "transparent",
+  cursor: "pointer",
+  fontWeight: 600,
+  marginTop: "1.5rem",
+  padding: "0.75rem 1rem",
+});
+const ActionLink = styled(Link)({ fontWeight: 700 });
 const Status = styled("p")({ color: "var(--text-subtle)", textAlign: "center" });
 
 function GameDetailsContent() {
@@ -89,6 +98,7 @@ function GameDetailsContent() {
   const [game, setGame] = useState<Game | null>(null);
   const [error, setError] = useState("");
   const [cartMessage, setCartMessage] = useState("");
+  const [favouriteMessage, setFavouriteMessage] = useState("");
   const [addingSeller, setAddingSeller] = useState<string | null>(null);
 
   useEffect(() => {
@@ -125,11 +135,26 @@ function GameDetailsContent() {
       } else {
         addToGuestCart(id, sellerId);
       }
+
       setCartMessage("Added to cart");
     } catch (requestError) {
       setCartMessage(requestError instanceof Error ? requestError.message : "Unable to add to cart");
     } finally {
       setAddingSeller(null);
+    }
+  }
+
+  async function addToFavourites() {
+    if (!getAccessToken()) {
+      setFavouriteMessage("Sign in to add this game to your favourites.");
+      return;
+    }
+
+    try {
+      await authenticatedApiFetch(`/wishlist/${id}`, { method: "POST" });
+      setFavouriteMessage("Added to favourites.");
+    } catch (requestError) {
+      setFavouriteMessage(requestError instanceof Error ? requestError.message : "Unable to add favourite");
     }
   }
 
@@ -151,6 +176,15 @@ function GameDetailsContent() {
               <MetaLabel>Lowest price</MetaLabel>
               <MetaValue>{game.lowestPrice ? `€${game.lowestPrice}` : "No offers"}</MetaValue>
             </Meta>
+              <FavouriteButton onClick={() => void addToFavourites()} type="button">
+                Add to favourites
+              </FavouriteButton>
+              {favouriteMessage && (
+                <Status>
+                  {favouriteMessage}
+                  {!getAccessToken() && <> <ActionLink href="/login">Sign in</ActionLink></>}
+                </Status>
+              )}
           </Details>
         </Hero>
         <Offers>
