@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "pnpm install --frozen-lockfile && pnpm exec prisma generate && pnpm build",
+    "build": "tsc -p tsconfig.json && node -e \"fs.cpSync('src/generated/prisma','dist/generated/prisma',{recursive:true})\"",
     "start": "node dist/server.js",
     "db:seed": "tsx prisma/seed.ts",
     "typecheck": "tsc --noEmit",
