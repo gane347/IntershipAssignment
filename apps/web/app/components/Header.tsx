@@ -3,23 +3,29 @@
 import { useState } from "react";
 import Link from "next/link";
 import SearchIcon from '@mui/icons-material/Search';
+import Image from "next/image";
 import MenuIcon from '@mui/icons-material/MenuOutlined';
+import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
+import LogoImage from "../assets/logoFull.svg";
+import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCartOutlined';
+import FavoriteIcon from '@mui/icons-material/FavoriteBorderOutlined';
 
 const categories = ["Mobile games", "Games", "PSN", "Xbox", "Nintendo"];
 
 const HeaderRoot = styled('header')({
-  backgroundColor: '#fff',
-  borderBottom: '1px solid #e2e8f0',
+  backgroundColor: '#4618ac',
+  padding: '0 20px',
+  margin: '0 auto',
 });
 
 const HeaderMain = styled('div')(({ theme }) => ({
   alignItems: 'center',
   display: 'flex',
   gap: theme.spacing(2),
-  margin: '0 auto',
   maxWidth: '80rem',
-  padding: theme.spacing(2, 2.5),
+  margin: '20px 0',
   [theme.breakpoints.up('lg')]: {
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4),
@@ -28,35 +34,31 @@ const HeaderMain = styled('div')(({ theme }) => ({
 
 const MenuButton = styled('button')(({ theme }) => ({
   '&:hover': {
-    backgroundColor: '#f1f5f9',
+    backgroundColor: 'rgba(0, 0, 0, 0.25)',
+    color: 'var(--accent)',
+    transition: 'background-color 150ms ease, color 150ms ease',
   },
   alignItems: 'center',
   background: 'transparent',
   border: 0,
-  borderRadius: theme.shape.borderRadius,
-  color: '#334155',
   cursor: 'pointer',
   display: 'flex',
   justifyContent: 'center',
+  padding: '10px 5px',
   order: -1,
-  padding: theme.spacing(1),
   [theme.breakpoints.up('lg')]: {
     order: 1,
   },
 }));
 
 const Logo = styled(Link)({
-  color: '#35c66b',
   flexShrink: 0,
-  fontSize: '1.5rem',
-  fontWeight: 900,
-  letterSpacing: '-0.08em',
-  textDecoration: 'none',
 });
 
 const SearchForm = styled('form')(({ theme }) => ({
   display: 'none',
   flex: 1,
+  minWidth: '550px',
   maxWidth: '36rem',
   [theme.breakpoints.up('md')]: {
     display: 'block',
@@ -64,33 +66,24 @@ const SearchForm = styled('form')(({ theme }) => ({
 }));
 
 const SearchBox = styled('div')({
-  '&:focus-within': {
-    boxShadow: '0 0 0 2px #35c66b',
-  },
   alignItems: 'center',
-  backgroundColor: '#f1f5f9',
-  borderRadius: '0.5rem',
-  color: '#64748b',
+  border: '1px solid #f1f5f9',
   display: 'flex',
-  padding: '0 1rem',
+  padding: '0 10px',
 });
 
 const SearchInput = styled('input')({
-  '&::placeholder': {
-    color: '#94a3b8',
-  },
   background: 'transparent',
   border: 0,
-  color: '#0f172a',
   flex: 1,
-  fontSize: '0.875rem',
+  fontSize: '1rem',
   outline: 0,
   padding: '0.75rem',
+  fontWeight: 800,
 });
 
-const AuthNav = styled('nav')({
+const ButtonNav = styled('nav')({
   alignItems: 'center',
-  color: '#334155',
   display: 'flex',
   fontSize: '0.875rem',
   fontWeight: 600,
@@ -98,26 +91,21 @@ const AuthNav = styled('nav')({
   marginLeft: 'auto',
 });
 
-const LoginLink = styled('a')({
+const HeaderLink = styled('a')({
   '&:hover': {
-    backgroundColor: '#f1f5f9',
+    color: '#fad318',
   },
   borderRadius: '0.5rem',
-  color: 'inherit',
-  padding: '0.5rem 0.75rem',
   textDecoration: 'none',
+  fontWeight: 400,
+  fontSize: '14px',
 });
 
-const RegisterLink = styled('a')({
-  '&:hover': {
-    backgroundColor: '#2eae5e',
-  },
-  backgroundColor: '#35c66b',
-  borderRadius: '0.5rem',
-  color: '#fff',
-  padding: '0.5rem 1rem',
-  textDecoration: 'none',
-});
+const LowerHeader = styled(Box)(() => ({
+  backgroundColor: 'rgba(0, 0, 0, 0.25)',
+  padding: '0 calc((100% - 1240px) / 2)',
+}));
+
 
 const MobileSearch = styled('div')(({ theme }) => ({
   borderTop: '1px solid #f1f5f9',
@@ -171,19 +159,12 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
+    <>
     <HeaderRoot>
       <HeaderMain>
-        <MenuButton
-          aria-expanded={menuOpen}
-          aria-label={menuOpen ? "Close categories menu" : "Open categories menu"}
-          onClick={() => setMenuOpen((open) => !open)}
-          type="button"
-        >
-          <MenuIcon />
-        </MenuButton>
 
         <Logo href="/">
-          ENEBA
+          <Image src={LogoImage} alt="Eneba" width={155} />
         </Logo>
 
         <SearchForm role="search">
@@ -199,15 +180,23 @@ export default function Header() {
             />
           </SearchBox>
         </SearchForm>
-
-        <AuthNav>
-          <LoginLink href="/login">
+        <Box sx={{ width: '150px' }} />
+        <ButtonNav>
+          <HeaderLink href="/wishlist">
+            <FavoriteIcon />
+          </HeaderLink>
+          <HeaderLink href="/cart">
+            <ShoppingCartIcon />
+          </HeaderLink>
+          <HeaderLink href="/login">
+          <PersonOutlinedIcon />
             Log in
-          </LoginLink>
-          <RegisterLink href="/register">
+          </HeaderLink>
+          |
+          <HeaderLink href="/register">
             Register
-          </RegisterLink>
-        </AuthNav>
+          </HeaderLink>
+        </ButtonNav>
       </HeaderMain>
 
       <MobileSearch>
@@ -233,6 +222,19 @@ export default function Header() {
           </CategoriesInner>
         </CategoriesNav>
       )}
+
     </HeaderRoot>
+    
+    <LowerHeader>
+      <MenuButton
+          aria-expanded={menuOpen}
+          aria-label={menuOpen ? "Close categories menu" : "Open categories menu"}
+          onClick={() => setMenuOpen((open) => !open)}
+          type="button"
+        >
+          <MenuIcon /> Categories
+      </MenuButton>
+    </LowerHeader>
+    </>
   );
 }

@@ -1,8 +1,15 @@
 @import "tailwindcss";
+@import "@fontsource/metropolis/300.css";
+@import "@fontsource/metropolis/400.css";
+@import "@fontsource/metropolis/600.css";
+@import "@fontsource/metropolis/800.css";
+@import "@fontsource/metropolis/900.css";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #4618ac;
+  --foreground: #ffffff;
+  --accent:#fad318;
+  --text-subtle: #b3aac9;
 }
 
 @theme inline {
@@ -14,13 +21,14 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #4618ac;
+    --foreground: #ffffff;
+    --accent:#fad318;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Metropolis', sans-serif;
 }

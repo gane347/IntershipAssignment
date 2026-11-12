@@ -3,7 +3,7 @@ import FacebookIcon from '@mui/icons-material/FacebookOutlined';
 import { styled } from '@mui/material/styles';
 
 const FooterRoot = styled('footer')({
-  backgroundColor: '#020617',
+  backgroundColor: 'rgba(0, 0, 0, 0.75)',
   color: '#cbd5e1',
 });
 
@@ -29,7 +29,6 @@ const FooterHeading = styled('h2')({
   fontWeight: 700,
   letterSpacing: '0.05em',
   margin: '0 0 1rem',
-  textTransform: 'uppercase',
 });
 
 const FooterList = styled('ul')({
@@ -46,7 +45,7 @@ const FooterLink = styled('a')({
   textDecoration: 'none',
   transition: 'color 150ms ease',
   '&:hover': {
-    color: '#5cdb88',
+    color: 'var(--accent)',
   },
 });
 
@@ -57,21 +56,14 @@ const SocialLinks = styled('div')({
 
 const SocialLink = styled('a')({
   alignItems: 'center',
-  backgroundColor: '#1e293b',
-  borderRadius: '9999px',
-  color: '#cbd5e1',
+  color: 'var(--text-subtle)',
   display: 'flex',
   justifyContent: 'center',
-  padding: '0.75rem',
   transition: 'background-color 150ms ease',
-  '&:hover': {
-    backgroundColor: '#35c66b',
-  },
 });
 
 const FooterCopyright = styled('div')({
-  borderTop: '1px solid #1e293b',
-  color: '#64748b',
+  color: 'var(--text-subtle)',
   fontSize: '0.75rem',
   padding: '1.25rem 1.25rem',
   textAlign: 'center',
@@ -88,9 +80,9 @@ function InstagramIcon() {
 }
 
 const columns = [
-  { title: "About Eneba", links: ["About us", "Contact us"] },
-  { title: "Buy", links: ["How to buy", "Collections", "Discounts"] },
-  { title: "Help", links: ["FAQ", "How to activate game"] },
+  { title: "About Eneba", links: ["About us"] },
+  { title: "Buy", links: ["How to buy", "Collections"] },
+  { title: "Help", links: ["FAQ", "How to activate game", "Return policy"] },
 ];
 
 export default function Footer() {
