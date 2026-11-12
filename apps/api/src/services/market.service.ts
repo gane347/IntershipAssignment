@@ -4,28 +4,102 @@ import { HttpError } from "../core/http.js";
 import { encryptDigitalKey } from "../core/digital-keys.js";
 
 export const marketService = {
-  listGames: async (page: number, pageSize: number) => {
-    const [items, total] = await prisma.$transaction([
-      prisma.game.findMany({
-        include: {
-          sellers: {
-            include: { seller: { select: { id: true, username: true } } },
+  listGames: async (options: {
+    page: number;
+    pageSize: number;
+    search?: string;
+    platform?: string;
+    region?: string;
+    minPrice?: number;
+    maxPrice?: number;
+    sort?: "newest" | "name-asc" | "name-desc" | "price-asc" | "price-desc";
+  }) => {
+    const games = await prisma.game.findMany({
+      where: {
+        name: options.search ? { contains: options.search, mode: "insensitive" } : undefined,
+        platform: options.platform
+          ? options.platform === "PSN"
+            ? { in: ["PSN", "PS5"] }
+            : { equals: options.platform }
+          : undefined,
+        region: options.region ? { equals: options.region } : undefined,
+        sellers: {
+          some: {
+            price: {
+              gte: options.minPrice,
+              lte: options.maxPrice,
+            },
           },
         },
-        orderBy: { createdAt: "desc" },
-        skip: (page - 1) * pageSize,
-        take: pageSize,
-      }),
-      prisma.game.count(),
+      },
+      include: {
+        sellers: {
+          include: { seller: { select: { id: true, username: true } } },
+        },
+      },
+    });
+
+    const items = games
+      .map((game) => ({
+        game,
+        lowestPrice: game.sellers.reduce(
+          (lowest, seller) => Math.min(lowest, Number(seller.price)),
+          Number.POSITIVE_INFINITY,
+        ),
+      }))
+      .sort((left, right) => {
+        switch (options.sort) {
+          case "name-asc":
+            return left.game.name.localeCompare(right.game.name);
+          case "name-desc":
+            return right.game.name.localeCompare(left.game.name);
+          case "price-asc":
+            return left.lowestPrice - right.lowestPrice;
+          case "price-desc":
+            return right.lowestPrice - left.lowestPrice;
+          default:
+            return right.game.createdAt.getTime() - left.game.createdAt.getTime();
+        }
+      })
+      .slice((options.page - 1) * options.pageSize, options.page * options.pageSize)
+      .map(({ game }) => game);
+
+    const [platforms, regions] = await prisma.$transaction([
+      prisma.game.findMany({ distinct: ["platform"], select: { platform: true }, orderBy: { platform: "asc" } }),
+      prisma.game.findMany({ distinct: ["region"], select: { region: true }, orderBy: { region: "asc" } }),
     ]);
 
     return {
       items,
-      total,
-      page,
-      pageSize,
-      totalPages: Math.ceil(total / pageSize),
+      total: games.length,
+      page: options.page,
+      pageSize: options.pageSize,
+      totalPages: Math.ceil(games.length / options.pageSize),
+      platforms: platforms.map(({ platform }) => platform),
+      regions: regions.map(({ region }) => region),
     };
+  },
+
+  listFeaturedGames: async (kind: "bestsellers" | "best-deals", limit: number) => {
+    const games = await prisma.game.findMany({
+      include: {
+        sellers: {
+          include: { seller: { select: { id: true, username: true } } },
+        },
+      },
+    });
+
+    return games
+      .sort((left, right) => {
+        if (kind === "best-deals") {
+          const leftPrice = Math.min(...left.sellers.map((seller) => Number(seller.price)));
+          const rightPrice = Math.min(...right.sellers.map((seller) => Number(seller.price)));
+          return leftPrice - rightPrice;
+        }
+
+        return right.sellers.length - left.sellers.length || right.createdAt.getTime() - left.createdAt.getTime();
+      })
+      .slice(0, limit);
   },
 
   getGame: async (gameId: string) => {

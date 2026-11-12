@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import SearchIcon from '@mui/icons-material/Search';
 import Image from "next/image";
 import MenuIcon from '@mui/icons-material/MenuOutlined';
@@ -14,7 +15,13 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCartOutlined';
 import FavoriteIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import { getCurrentUser, logout, type User } from "@/lib/auth";
 
-const categories = ["All offers","Mobile games", "Games", "PSN", "Xbox", "Nintendo"];
+const categories = [
+  { label: "All offers", href: "/games" },
+  { label: "PC", href: "/games?platform=PC" },
+  { label: "PSN", href: "/games?platform=PSN" },
+  { label: "Xbox", href: "/games?platform=Xbox" },
+  { label: "Nintendo", href: "/games?platform=Nintendo%20Switch" },
+];
 
 const HeaderRoot = styled('header')({
   backgroundColor: '#4618ac',
@@ -180,8 +187,10 @@ const DrawerCategoryLink = styled('a')(({ theme }) => ({
 }));
 
 export default function Header() {
+  const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     void getCurrentUser().then(setUser);
@@ -190,6 +199,12 @@ export default function Header() {
   async function handleLogout() {
     await logout();
     setUser(null);
+  }
+
+  function handleSearch(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const query = search.trim();
+    router.push(query ? `/games?search=${encodeURIComponent(query)}` : "/games");
   }
 
   return (
@@ -201,7 +216,7 @@ export default function Header() {
           <Image src={LogoImage} alt="logo" width={35} />
         </Logo>
 
-        <SearchForm role="search">
+        <SearchForm onSubmit={handleSearch} role="search">
           <label className="sr-only" htmlFor="site-search">
             Search
           </label>
@@ -209,8 +224,10 @@ export default function Header() {
             <SearchIcon />
             <SearchInput
               id="site-search"
+              onChange={(event) => setSearch(event.target.value)}
               placeholder="Search for games, gift cards and more"
               type="search"
+              value={search}
             />
           </SearchBox>
         </SearchForm>
@@ -248,13 +265,19 @@ export default function Header() {
       </HeaderMain>
 
       <MobileSearch>
-        <form role="search">
+        <form onSubmit={handleSearch} role="search">
           <SearchIcon />
           <label className="sr-only" htmlFor="mobile-site-search">
             Search
           </label>
           <SearchBox>
-            <SearchInput id="mobile-site-search" placeholder="Search" type="search" />
+            <SearchInput
+              id="mobile-site-search"
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder="Search"
+              type="search"
+              value={search}
+            />
           </SearchBox>
         </form>
       </MobileSearch>
@@ -279,8 +302,8 @@ export default function Header() {
           </DrawerHeader>
           <DrawerList>
             {categories.map((category) => (
-              <DrawerCategoryLink href="#" key={category} onClick={() => setMenuOpen(false)}>
-                {category}
+              <DrawerCategoryLink href={category.href} key={category.label} onClick={() => setMenuOpen(false)}>
+                {category.label}
               </DrawerCategoryLink>
             ))}
           </DrawerList>

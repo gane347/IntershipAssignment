@@ -95,7 +95,14 @@ function GameDetailsContent() {
     let active = true;
     apiFetch<Game>(`/games/${id}`)
       .then((response) => {
-        if (active) setGame(response);
+        if (active) {
+          setGame(response);
+          const viewed = JSON.parse(localStorage.getItem("recently-viewed-games") ?? "[]") as string[];
+          localStorage.setItem(
+            "recently-viewed-games",
+            JSON.stringify([id, ...viewed.filter((gameId) => gameId !== id)].slice(0, 10)),
+          );
+        }
       })
       .catch((requestError: unknown) => {
         if (active) setError(requestError instanceof Error ? requestError.message : "Unable to load game");

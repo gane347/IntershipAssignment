@@ -59,12 +59,37 @@ marketRouter.get("/games", async (_req, res) => {
   const query = z.object({
     page: z.coerce.number().int().min(1).default(1),
     pageSize: z.coerce.number().int().min(1).max(50).default(8),
+    search: z.string().trim().max(150).optional(),
+    platform: z.string().trim().max(50).optional(),
+    region: z.string().trim().max(50).optional(),
+    minPrice: z.coerce.number().finite().min(0).optional(),
+    maxPrice: z.coerce.number().finite().min(0).optional(),
+    sort: z.enum(["newest", "name-asc", "name-desc", "price-asc", "price-desc"]).default("newest"),
+  }).refine((value) => value.minPrice === undefined || value.maxPrice === undefined || value.minPrice <= value.maxPrice, {
+    message: "Minimum price must not exceed maximum price",
+    path: ["minPrice"],
   }).parse(_req.query);
-  const result = await marketService.listGames(query.page, query.pageSize);
+  const result = await marketService.listGames(query);
   res.json({
     ...result,
     items: result.items.map(serializeGame),
   });
+});
+
+marketRouter.get("/bestsellers", async (req, res) => {
+  const { limit } = z.object({
+    limit: z.coerce.number().int().min(1).max(10).default(5),
+  }).parse(req.query);
+  const games = await marketService.listFeaturedGames("bestsellers", limit);
+  res.json(games.map(serializeGame));
+});
+
+marketRouter.get("/best-deals", async (req, res) => {
+  const { limit } = z.object({
+    limit: z.coerce.number().int().min(1).max(10).default(5),
+  }).parse(req.query);
+  const games = await marketService.listFeaturedGames("best-deals", limit);
+  res.json(games.map(serializeGame));
 });
 
 marketRouter.get("/games/:gameId", async (req, res) => {
