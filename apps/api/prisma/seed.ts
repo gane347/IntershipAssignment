@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import { prisma } from "../src/core/db.js";
+import { encryptDigitalKey } from "../src/core/digital-keys.js";
 
 const users = {
   buyer: {
@@ -264,18 +265,23 @@ async function seed() {
   }
 
   for (const game of games) {
+    const encryptedDigitalKey = encryptDigitalKey(
+      `ENEBA-${game.id.replaceAll("-", "").slice(-20).toUpperCase()}`,
+    );
     await prisma.game.upsert({
       where: { id: game.id },
       update: {
         name: game.name,
         region: game.region,
         platform: game.platform,
+        digitalKeyEncrypted: encryptedDigitalKey,
       },
       create: {
         id: game.id,
         name: game.name,
         region: game.region,
         platform: game.platform,
+        digitalKeyEncrypted: encryptedDigitalKey,
       },
     });
     for (const [sellerIndex, seller] of sellers.entries()) {
@@ -295,9 +301,15 @@ async function seed() {
   });
 
   await prisma.cartItem.upsert({
-    where: { userId_gameId: { userId: users.buyer.id, gameId: games[0].id } },
+    where: {
+      userId_gameId_sellerId: {
+        userId: users.buyer.id,
+        gameId: games[0].id,
+        sellerId: users.seller.id,
+      },
+    },
     update: { quantity: 1 },
-    create: { userId: users.buyer.id, gameId: games[0].id, quantity: 1 },
+    create: { userId: users.buyer.id, gameId: games[0].id, sellerId: users.seller.id, quantity: 1 },
   });
 
   const listingCounts = await prisma.gameSeller.groupBy({

@@ -35,6 +35,7 @@ model Game {
   name      String       @db.VarChar(150)
   region    String       @db.VarChar(50)
   platform  String       @db.VarChar(50)
+  digitalKeyEncrypted String @map("digital_key_encrypted")
   createdAt DateTime     @default(now()) @map("created_at")
   sellers   GameSeller[]
   wishlist  WishlistItem[]
@@ -49,6 +50,7 @@ model GameSeller {
   price    Decimal  @db.Decimal(10, 2)
   game     Game    @relation(fields: [gameId], references: [id], onDelete: Cascade)
   seller   User    @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  cartItems CartItem[]
 
   @@id([gameId, sellerId])
   @@map("game_sellers")
@@ -68,11 +70,13 @@ model WishlistItem {
 model CartItem {
   userId    String   @map("user_id") @db.Uuid
   gameId    String   @map("game_id") @db.Uuid
+  sellerId  String   @map("seller_id") @db.Uuid
   quantity  Int      @default(1)
   createdAt DateTime @default(now()) @map("created_at")
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   game      Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  sellerListing GameSeller @relation(fields: [gameId, sellerId], references: [gameId, sellerId], onDelete: Cascade)
 
-  @@id([userId, gameId])
+  @@id([userId, gameId, sellerId])
   @@map("cart_items")
 }

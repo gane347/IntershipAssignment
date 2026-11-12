@@ -5,6 +5,8 @@ import { Suspense } from "react";
 import { useParams } from "next/navigation";
 import { styled } from "@mui/material/styles";
 import { apiFetch, authenticatedApiFetch } from "@/lib/api/client";
+import { addToGuestCart } from "@/lib/guest-cart";
+import { getAccessToken } from "@/lib/auth";
 
 type SellerOffer = {
   price: string;
@@ -108,10 +110,14 @@ function GameDetailsContent() {
     setAddingSeller(sellerId);
     setCartMessage("");
     try {
-      await authenticatedApiFetch(`/cart/${id}`, {
-        method: "POST",
-        body: JSON.stringify({ quantity: 1 }),
-      });
+      if (getAccessToken()) {
+        await authenticatedApiFetch(`/cart/${id}`, {
+          method: "POST",
+          body: JSON.stringify({ sellerId, quantity: 1 }),
+        });
+      } else {
+        addToGuestCart(id, sellerId);
+      }
       setCartMessage("Added to cart");
     } catch (requestError) {
       setCartMessage(requestError instanceof Error ? requestError.message : "Unable to add to cart");

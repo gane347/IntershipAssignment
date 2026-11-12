@@ -1,5 +1,7 @@
+import { randomUUID } from "node:crypto";
 import { prisma } from "../core/db.js";
 import { HttpError } from "../core/http.js";
+import { encryptDigitalKey } from "../core/digital-keys.js";
 
 export const marketService = {
   listGames: async (page: number, pageSize: number) => {
@@ -49,6 +51,7 @@ export const marketService = {
         name: input.name,
         region: input.region,
         platform: input.platform,
+        digitalKeyEncrypted: encryptDigitalKey(`ENEBA-${randomUUID().replaceAll("-", "").slice(0, 20).toUpperCase()}`),
         sellers: { create: { sellerId, price: input.price } },
       },
       include: { sellers: { select: { sellerId: true, price: true } } },
@@ -95,12 +98,14 @@ export const marketService = {
       },
     }),
 
-  addToCart: async (userId: string, gameId: string, quantity: number) => {
-    const game = await prisma.game.findUnique({ where: { id: gameId } });
-    if (!game) throw new HttpError(404, "Game not found");
+  addToCart: async (userId: string, gameId: string, sellerId: string, quantity: number) => {
+    const listing = await prisma.gameSeller.findUnique({
+      where: { gameId_sellerId: { gameId, sellerId } },
+    });
+    if (!listing) throw new HttpError(404, "Seller listing not found");
     return prisma.cartItem.upsert({
-      where: { userId_gameId: { userId, gameId } },
-      create: { userId, gameId, quantity },
+      where: { userId_gameId_sellerId: { userId, gameId, sellerId } },
+      create: { userId, gameId, sellerId, quantity },
       update: { quantity: { increment: quantity } },
       include: {
         game: {
@@ -110,12 +115,13 @@ export const marketService = {
             },
           },
         },
+        sellerListing: { include: { seller: { select: { id: true, username: true } } } },
       },
     });
   },
 
-  removeFromCart: (userId: string, gameId: string) =>
-    prisma.cartItem.deleteMany({ where: { userId, gameId } }),
+  removeFromCart: (userId: string, gameId: string, sellerId: string) =>
+    prisma.cartItem.deleteMany({ where: { userId, gameId, sellerId } }),
 
   getCart: (userId: string) =>
     prisma.cartItem.findMany({
@@ -128,6 +134,7 @@ export const marketService = {
             },
           },
         },
+        sellerListing: { include: { seller: { select: { id: true, username: true } } } },
       },
     }),
 };
