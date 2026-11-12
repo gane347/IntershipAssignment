@@ -81,12 +81,16 @@ function InstagramIcon() {
 }
 
 const columns = [
-  { title: "About the store", links: ["About us", "Contact us", "Careers", "Trust & transparency"] },
-  { title: "Buy", links: ["How to buy", "Collections", "Loyalty program", "Discounts"] },
-  { title: "Help", links: ["FAQ", "How to activate game", "Create a ticket", "Return policy", "Content reporting"] },
-  { title: "Community", links: ["Gaming news", "Giveaways", "Become affiliate", "Snakzy: Play and Earn"] },
-  { title: "Business", links: ["Sell on the store", "Advertise with us"] },
+  { title: "About the store", links: ["About us", "Contact us"] },
+  { title: "Help", links: ["FAQ"] },
 ];
+
+function getLinkHref(link: string) {
+  if (link === "About us") return "/about-us";
+  if (link === "Contact us") return "/contact-us";
+  if (link === "FAQ") return "/faq";
+  return "#";
+}
 
 export default function Footer() {
   return (
@@ -98,7 +102,7 @@ export default function Footer() {
             <FooterList>
               {column.links.map((link) => (
                 <li key={link}>
-                  <FooterLink href="#">{link}</FooterLink>
+                  <FooterLink href={getLinkHref(link)}>{link}</FooterLink>
                 </li>
               ))}
             </FooterList>
