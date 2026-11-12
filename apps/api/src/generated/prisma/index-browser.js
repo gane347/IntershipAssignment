@@ -127,6 +127,42 @@ exports.Prisma.ItemScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.UserScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  username: 'username',
+  passwordHash: 'passwordHash',
+  isSeller: 'isSeller',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.GameScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  price: 'price',
+  region: 'region',
+  platform: 'platform',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.GameSellerScalarFieldEnum = {
+  gameId: 'gameId',
+  sellerId: 'sellerId'
+};
+
+exports.Prisma.WishlistItemScalarFieldEnum = {
+  userId: 'userId',
+  gameId: 'gameId',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.CartItemScalarFieldEnum = {
+  userId: 'userId',
+  gameId: 'gameId',
+  quantity: 'quantity',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -139,7 +175,12 @@ exports.Prisma.QueryMode = {
 
 
 exports.Prisma.ModelName = {
-  Item: 'Item'
+  Item: 'Item',
+  User: 'User',
+  Game: 'Game',
+  GameSeller: 'GameSeller',
+  WishlistItem: 'WishlistItem',
+  CartItem: 'CartItem'
 };
 
 /**
