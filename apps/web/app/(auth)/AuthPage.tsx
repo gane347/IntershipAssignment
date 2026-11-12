@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { styled } from "@mui/material/styles";
 import { login, register } from "@/lib/auth";
-import LogoImage from "../assets/logo.svg";
+import LogoImage from "../icon.svg";
 
 type AuthMode = "login" | "register";
 
