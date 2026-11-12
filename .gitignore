@@ -4,3 +4,4 @@ node_modules
 .env.test
 env.ts
 env.js
+apps/api/src/generated/
