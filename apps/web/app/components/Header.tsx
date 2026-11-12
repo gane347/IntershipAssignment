@@ -2,30 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import SearchIcon from '@mui/icons-material/Search';
+import MenuIcon from '@mui/icons-material/MenuOutlined';
 
 const categories = ["Mobile games", "Games", "PSN", "Xbox", "Nintendo"];
-
-function SearchIcon() {
-  return (
-    <svg aria-hidden="true" fill="none" height="20" viewBox="0 0 24 24" width="20">
-      <circle cx="11" cy="11" r="6.5" stroke="currentColor" strokeWidth="2" />
-      <path d="m16 16 4 4" stroke="currentColor" strokeLinecap="round" strokeWidth="2" />
-    </svg>
-  );
-}
-
-function MenuIcon({ open }: { open: boolean }) {
-  return (
-    <svg aria-hidden="true" fill="none" height="24" viewBox="0 0 24 24" width="24">
-      <path
-        d={open ? "M6 6 18 18M18 6 6 18" : "M4 7h16M4 12h16M4 17h16"}
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeWidth="2"
-      />
-    </svg>
-  );
-}
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -40,7 +20,7 @@ export default function Header() {
           onClick={() => setMenuOpen((open) => !open)}
           type="button"
         >
-          <MenuIcon open={menuOpen} />
+          <MenuIcon />
         </button>
 
         <Link className="shrink-0 text-2xl font-black tracking-[-0.08em] text-[#35c66b]" href="/">
