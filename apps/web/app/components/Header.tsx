@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import SearchIcon from '@mui/icons-material/Search';
 import Image from "next/image";
@@ -12,6 +12,7 @@ import LogoImage from "../assets/logoFull.svg";
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCartOutlined';
 import FavoriteIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import { getCurrentUser, logout, type User } from "@/lib/auth";
 
 const categories = ["All offers","Mobile games", "Games", "PSN", "Xbox", "Nintendo"];
 
@@ -180,6 +181,16 @@ const DrawerCategoryLink = styled('a')(({ theme }) => ({
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    void getCurrentUser().then(setUser);
+  }, []);
+
+  async function handleLogout() {
+    await logout();
+    setUser(null);
+  }
 
   return (
     <>
@@ -211,14 +222,28 @@ export default function Header() {
           <HeaderLink href="/cart">
             <ShoppingCartIcon />
           </HeaderLink>
-          <HeaderLink href="/login">
-          <PersonOutlinedIcon />
-            Log in
-          </HeaderLink>
-          |
-          <HeaderLink href="/register">
-            Register
-          </HeaderLink>
+          {user ? (
+            <>
+              <HeaderLink href="/account">
+                <PersonOutlinedIcon />
+                {user.username}
+              </HeaderLink>
+              <HeaderLink href="/" onClick={(event) => { event.preventDefault(); void handleLogout(); }}>
+                Log out
+              </HeaderLink>
+            </>
+          ) : (
+            <>
+              <HeaderLink href="/login">
+                <PersonOutlinedIcon />
+                Log in
+              </HeaderLink>
+              |
+              <HeaderLink href="/register">
+                Register
+              </HeaderLink>
+            </>
+          )}
         </ButtonNav>
       </HeaderMain>
 
