@@ -4,7 +4,7 @@ export default function AboutUsPage() {
   return (
     <InfoPage
       title="About us"
-      intro="Eneba is a digital marketplace for discovering and buying games from trusted sellers."
+      intro="This store is a digital marketplace for discovering and buying games from trusted sellers."
       sections={[
         {
           heading: "Our mission",
