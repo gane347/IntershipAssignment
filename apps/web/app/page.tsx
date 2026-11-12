@@ -13,3 +13,4 @@ export default function Home() {
     </div>
   );
 }
+export const instant = false;
