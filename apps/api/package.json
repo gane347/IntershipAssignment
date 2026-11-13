@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && node -e \"fs.cpSync('src/generated/prisma','dist/generated/prisma',{recursive:true})\"",
     "start": "node dist/server.js",
     "db:seed": "tsx prisma/seed.ts",
     "typecheck": "tsc --noEmit",
@@ -19,6 +19,7 @@
   "dependencies": {
     "@prisma/adapter-pg": "^7.10.1",
     "@prisma/client": "^7.10.1",
+    "@prisma/client-runtime-utils": "^7.10.1",
     "@repo/shared-types": "workspace:*",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
