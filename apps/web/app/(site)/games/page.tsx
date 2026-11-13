@@ -67,7 +67,7 @@ const FilterInput = styled("input")({
   padding: "0.6rem",
 });
 const FilterSelect = styled("select")({
-  backgroundColor: "#fff",
+  background: "var(--background-dark)",
   border: "1px solid #cbd5e1",
   minWidth: "9rem",
   padding: "0.6rem",
