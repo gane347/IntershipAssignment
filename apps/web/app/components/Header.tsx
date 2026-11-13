@@ -64,6 +64,12 @@ const Logo = styled(Link)({
   flexShrink: 0,
 });
 
+const DesktopLogo = styled(Logo)(({ theme }) => ({
+  [theme.breakpoints.down('md')]: {
+    display: 'none',
+  },
+}));
+
 const SearchForm = styled('form')(({ theme }) => ({
   display: 'none',
   flex: 1,
@@ -74,12 +80,47 @@ const SearchForm = styled('form')(({ theme }) => ({
   },
 }));
 
+const MobileHeader = styled('div')(({ theme }) => ({
+  alignItems: 'space-between',
+  display: 'flex',
+  flex: 1,
+  gap: theme.spacing(1),
+  [theme.breakpoints.up('md')]: {
+    display: 'none',
+  },
+}));
+
+const MobileSearchToggle = styled('button')({
+  '&:hover': {
+    color: '#fad318',
+  },
+  alignItems: 'center',
+  background: 'transparent',
+  border: 0,
+  color: 'inherit',
+  cursor: 'pointer',
+  display: 'flex',
+  justifyContent: 'center',
+  padding: '0.5rem',
+});
+
+const MobileSearchForm = styled('form')(({ theme }) => ({
+  alignItems: 'center',
+  border: '1px solid #f1f5f9',
+  display: 'flex',
+  flex: 1,
+  gap: theme.spacing(1),
+  minWidth: 0,
+  padding: '0 10px',
+}));
+
 const SearchBox = styled('div')({
   alignItems: 'center',
   border: '1px solid #f1f5f9',
   display: 'flex',
   padding: '0 10px',
 });
+
 
 const SearchInput = styled('input')({
   background: 'transparent',
@@ -89,15 +130,25 @@ const SearchInput = styled('input')({
   outline: 0,
   padding: '0.75rem',
   fontWeight: 800,
+  backgroundColor: 'transparent',
 });
 
-const ButtonNav = styled('nav')({
+const ButtonNav = styled('nav')(({ theme }) => ({
   alignItems: 'center',
-  display: 'flex',
+  display: 'none',
   fontSize: '0.875rem',
   fontWeight: 600,
   gap: '0.75rem',
   marginLeft: 'auto',
+  [theme.breakpoints.up('md')]: {
+    display: 'flex',
+  },
+}));
+
+const MobileButtonNav = styled(ButtonNav)({
+  display: 'flex',
+  gap: '0.25rem',
+  marginLeft: '5rem',
 });
 
 const HeaderLink = styled('a')({
@@ -115,15 +166,6 @@ const LowerHeader = styled(Box)(() => ({
   padding: '0 calc((100% - 1240px) / 2)',
 }));
 
-
-const MobileSearch = styled('div')(({ theme }) => ({
-  borderTop: '1px solid #f1f5f9',
-  display: 'block',
-  padding: theme.spacing(1.5, 2.5),
-  [theme.breakpoints.up('md')]: {
-    display: 'none',
-  },
-}));
 
 const DrawerBackdrop = styled('div')({
   backgroundColor: 'rgba(15, 23, 42, 0.45)',
@@ -191,6 +233,7 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [search, setSearch] = useState("");
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
   useEffect(() => {
     void getCurrentUser().then(setUser);
@@ -212,9 +255,9 @@ export default function Header() {
     <HeaderRoot>
       <HeaderMain>
 
-        <Logo href="/">
+        <DesktopLogo href="/">
           <Image src={LogoImage} alt="logo" width={35} />
-        </Logo>
+        </DesktopLogo>
 
         <SearchForm onSubmit={handleSearch} role="search">
           <label className="sr-only" htmlFor="site-search">
@@ -231,7 +274,61 @@ export default function Header() {
             />
           </SearchBox>
         </SearchForm>
-        <Box sx={{ width: '150px' }} />
+        <MobileHeader>
+          {mobileSearchOpen ? (
+            <MobileSearchForm onSubmit={handleSearch} role="search">
+              <SearchIcon aria-hidden="true" />
+              <label className="sr-only" htmlFor="mobile-site-search">
+                Search
+              </label>
+              <SearchInput
+                autoFocus
+                id="mobile-site-search"
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder="Search"
+                type="search"
+                value={search}
+              />
+            </MobileSearchForm>
+          ) : (
+            <>
+              <Logo href="/">
+                <Image src={LogoImage} alt="logo" width={35} />
+              </Logo>
+              <MobileSearchToggle
+                aria-expanded={mobileSearchOpen}
+                aria-label="Open search"
+                onClick={() => setMobileSearchOpen(true)}
+                type="button"
+              >
+                <SearchIcon />
+              </MobileSearchToggle>
+              <MobileButtonNav>
+                <HeaderLink href="/wishlist" aria-label="Favourites">
+                  <FavoriteIcon />
+                </HeaderLink>
+                <HeaderLink href="/cart" aria-label="Cart">
+                  <ShoppingCartIcon />
+                </HeaderLink>
+                {user ? (
+                  <>
+                    <HeaderLink href="/account">{user.username}</HeaderLink>
+                    <HeaderLink href="/" onClick={(event) => { event.preventDefault(); void handleLogout(); }}>
+                      Log out
+                    </HeaderLink>
+                  </>
+                ) : (
+                  <>
+                    <HeaderLink href="/login">Log in</HeaderLink>
+                    <HeaderLink href="/register">Register</HeaderLink>
+                  </>
+                )}
+              </MobileButtonNav>
+            </>
+          )}
+        </MobileHeader>
+        
+
         <ButtonNav>
           <HeaderLink href="/wishlist">
             <FavoriteIcon />
@@ -263,24 +360,6 @@ export default function Header() {
           )}
         </ButtonNav>
       </HeaderMain>
-
-      <MobileSearch>
-        <form onSubmit={handleSearch} role="search">
-          <SearchIcon />
-          <label className="sr-only" htmlFor="mobile-site-search">
-            Search
-          </label>
-          <SearchBox>
-            <SearchInput
-              id="mobile-site-search"
-              onChange={(event) => setSearch(event.target.value)}
-              placeholder="Search"
-              type="search"
-              value={search}
-            />
-          </SearchBox>
-        </form>
-      </MobileSearch>
 
     </HeaderRoot>
 
