@@ -103,13 +103,6 @@ const Input = styled("input")({
   fontWeight: 400,
 });
 
-const SellerOption = styled("label")({
-  alignItems: "center",
-  display: "flex",
-  fontSize: "0.875rem",
-  gap: "0.5rem",
-});
-
 const ErrorMessage = styled("p")({
   color: "#dc2626",
   fontSize: "0.875rem",
@@ -194,12 +187,6 @@ export default function AuthPage({ mode }: { mode: AuthMode }) {
             <Field>
               <Input minLength={8} onChange={(event) => isLogin ? setForm({ ...form, password: event.target.value }) : setForm({ ...form, password: event.target.value })} required type="password" value={form.password} placeholder="Password" />
             </Field>
-            {!isLogin && (
-              <SellerOption>
-                <input checked={form.isSeller} onChange={(event) => setForm({ ...form, isSeller: event.target.checked })} type="checkbox" />
-                Register as a seller
-              </SellerOption>
-            )}
             {error && <ErrorMessage>{error}</ErrorMessage>}
             <SubmitButton disabled={loading} type="submit">
               {loading ? (isLogin ? "Logging in..." : "Registering...") : isLogin ? "Log in" : "Register"}

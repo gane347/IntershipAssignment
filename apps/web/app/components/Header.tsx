@@ -312,7 +312,7 @@ export default function Header() {
                 </HeaderLink>
                 {user ? (
                   <>
-                    <HeaderLink href="/account">{user.username}</HeaderLink>
+                    {user.username}
                     <HeaderLink href="/" onClick={(event) => { event.preventDefault(); void handleLogout(); }}>
                       Log out
                     </HeaderLink>
@@ -338,10 +338,8 @@ export default function Header() {
           </HeaderLink>
           {user ? (
             <>
-              <HeaderLink href="/account">
-                <PersonOutlinedIcon />
-                {user.username}
-              </HeaderLink>
+              <PersonOutlinedIcon />
+              {user.username}
               <HeaderLink href="/" onClick={(event) => { event.preventDefault(); void handleLogout(); }}>
                 Log out
               </HeaderLink>
